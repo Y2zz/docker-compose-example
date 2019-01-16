@@ -1,0 +1,36 @@
+version: '3'
+services:
+
+    # mysql
+    mysql:
+        image: mysql:5.7
+        container_name: mysql
+        restart: always
+        command: --character-set-server=utf8 --collation-server=utf8_general_ci
+        environment:
+            - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+        ports:
+            - "3306:3306"
+        networks:
+            - develop-env
+        volumes:
+            - C:\docker\volumes\mysql:/var/lib/mysql
+
+    # phpmyadmin
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        restart: always
+        environment:
+            - PMA_HOST=mysql
+            - PMA_USER=root
+        ports:
+            - "80:80"
+        networks:
+            - develop-env
+        external_links:
+            - mysql:phpmyadmin
+
+networks:
+  develop-env:
+    driver: bridge
